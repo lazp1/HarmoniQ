@@ -1,0 +1,42 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h5>Employee Profile</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <img [src]="employee.photoUrl || 'assets/images/profile.jpg'" class="img-fluid rounded-circle"
+          alt="Employee Photo">
+      </div>
+      <div class="col-md-8">
+        <h4>{{employee.name}}</h4>
+        <h5>Πληροφορίες</h5>
+        <hr>
+        <p><strong>Email:</strong> {{employee.email}}</p>
+        <p><strong>Τηλέφωνο:</strong> {{employee.phone}}</p>
+        <p><strong>Τμήμα:</strong> {{dept.name}}</p>
+        <p><strong>Θέση:</strong> {{manager? 'Manager' : 'Υφιστάμενος'}}</p>
+        <p><strong>Ημερομηνία πρόσληψης:</strong> {{employee.hireDate | date:'longDate'}}</p>
+        <p><strong>Φύλο:</strong> {{employee.gender == 'male' ? 'Άντρας' : employee.gender == 'female' ? 'Γυναίκα' :
+          'Δεν επιθυμεί να δηλώσει'}}</p>
+        <p><strong>Ημερομηνία γέννησης:</strong> {{employee.birthDate | date:'longDate'}}</p>
+        <p><strong>Διεύθυνση:</strong> {{employee.address}}</p>
+        <p><strong>Χώρα:</strong> {{employee.country}}</p>
+        <p><strong>City:</strong> {{employee.city}}</p>
+        <p><strong>Οικογενιακή κατάσταση:</strong> {{employee.marriedStatus ? 'Έγγαμος/η' : 'Ελεύθερος/η'}}</p>
+        <p><strong>Έχει παιδιά:</strong> {{employee.haveChildren ? 'Ναι' : 'Όχι'}}</p>
+        <p *ngIf="employee.haveChildren"><strong>Αριθμός παιδιών:</strong> {{employee.numberOfChildren}}</p>
+        <p><strong>Απόσταση από την εργασία:</strong> {{employee.distanceToWork}} km</p>
+        <p><strong>Εκπαιδευτηκό επίπεδο:</strong> {{employee.educationLevel}}</p>
+        <h5>Απολαβές</h5>
+        <p><strong>Μισθός:</strong> {{employee.salary}} €</p>
+
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12 text-right">
+        <button class="btn btn-danger" (click)="deleteEmployee()">Delete Employee</button>
+      </div>
+    </div>
+  </div>
+</div>

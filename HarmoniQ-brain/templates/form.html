@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Φόρμα Εργαζομένων</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Φόρμα ελέγχου για εργαζόμενους</h2>
+        <form action="/predict" method="POST">
+            <label for="YearsAtCompany">Έτη στην εταιρεία:</label>
+            <input type="text" id="YearsAtCompany" name="YearsAtCompany" placeholder="e.g., 5">
+
+            <label for="JobSatisfaction">Ποσοστό ικανοποίησης εργασίας (1-5):</label>
+            <input type="text" id="JobSatisfaction" name="JobSatisfaction" placeholder="e.g., 4">
+
+            <label for="MaritalStatus">Οικογενιακή κατάσταση:</label>
+            <select id="MaritalStatus" name="MaritalStatus">
+                <option value="Single">Μόνος/η</option>
+                <option value="Married">Παντρεμένος/η</option>
+                <option value="Divorced">Διαζευγμένος/η</option>
+            </select>
+
+            <label for="Gender">Φύλο:</label>
+            <select id="Gender" name="Gender">
+                <option value="Male">Άντρας</option>
+                <option value="Female">Γυναίκα</option>
+            </select>
+
+            <label for="DistanceFromHome">Απόσταση από την εργασία στο σπίτι:</label>
+            <input type="text" id="DistanceFromHome" name="DistanceFromHome" placeholder="e.g., 10">
+
+            <select id="Over18" name="Over18" hidden>
+                <option value="Y" selected>Yes</option>
+                <option value="N">No</option>
+            </select>
+
+            <label for="RelationshipSatisfaction">Συναδελφικές σχέσεις (1-5):</label>
+            <input type="text" id="RelationshipSatisfaction" name="RelationshipSatisfaction" placeholder="e.g., 3">
+
+            <label for="EnvironmentSatisfaction">Αξιολόγηση περιβάλλοντος εργασίας (1-5):</label>
+            <input type="text" id="EnvironmentSatisfaction" name="EnvironmentSatisfaction" placeholder="e.g., 4">
+
+            <input type="submit" value="Ανάλυση Δεδομένων">
+        </form>
+    </div>
+
+</body>
+
+</html>

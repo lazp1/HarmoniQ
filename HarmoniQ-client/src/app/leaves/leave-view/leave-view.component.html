@@ -1,0 +1,20 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h5>Άδεια {{leave.employeeDetails.FirstName + " " + leave.employeeDetails.LastName}}</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Πληροφορίες</h5>
+        <hr>
+        <p><strong>Αίτηση από:</strong> {{leave.employeeDetails.FirstName + " " + leave.employeeDetails.LastName + " "
+          +
+          leave.employeeDetails.Email}}</p>
+        <p><strong>Από:</strong> {{leave.startDate | date:'longDate'}}</p>
+        <p><strong>Μέχρι:</strong> {{leave.endDate | date:'longDate'}}</p>
+        <p><strong>Αιτιολογία:</strong> {{leave.reason}}</p>
+        <p><strong>Κατάσταση:</strong> {{leave.status}}</p>
+      </div>
+    </div>
+  </div>
+</div>

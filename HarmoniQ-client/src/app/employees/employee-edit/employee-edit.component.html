@@ -1,0 +1,203 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{employee.name}}</h5>
+
+    <div class="container">
+      <form style="width:100%;" #deleteEmployeeForm="ngForm" (ngSubmit)="deleteEmployee()" autocomplete="off">
+        <button class="btn btn-danger btn-lg float-right" type="submit"
+          style="position: absolute; top: 10px; right: 10px; border: 1px solid;" alt="Διαγραφή">
+          <i class="fa fa-trash"></i>
+        </button>
+      </form>
+    </div>
+
+    <form style="width:100%;" #updateEmployeeForm="ngForm" (ngSubmit)="updateEmployee()" autocomplete="off">
+      <div class="form-group">
+        <label for="firstName">Όνομα</label>
+        <input type="firstName" class="form-control" id="firstName" name="firstName" [(ngModel)]="employee.firstName"
+          required value="{{employee.firstName}}">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Επίθετο</label>
+        <input type="lastName" class="form-control" id="lastName" name="lastName" [(ngModel)]="employee.lastName"
+          required value="{{employee.lastName}}">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="employee.email" disabled required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Τηλέφωνο</label>
+        <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="employee.phone">
+      </div>
+      <div class="form-group">
+        <label for="jobLevel">Επίπεδο εμπιρείας</label>
+        <!-- <input type="text" class="form-control" id="jobLevel" name="jobLevel" [(ngModel)]="employee.jobLevel"> -->
+        <select class="form-control" id="jobLevel" name="jobLevel" [(ngModel)]="employee.jobLevel">
+          <option value="">Επιλέξτε</option>
+          <option value="intern">Πρακτική</option>
+          <option value="junior">Junior</option>
+          <option value="mid">Mid</option>
+          <option value="senior">Senior</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="workModel">Τόπος εργασίας</label>
+        <select class="form-control" id="workModel" name="workModel" [(ngModel)]="employee.workModel">
+          <option value="">Επιλέξτε</option>
+          <option value="onsite">Γραφείο</option>
+          <option value="hybrid">Υβριδικό</option>
+          <option value="remote">Εξ' αποστάσεως</option>
+          <option value="external">External Employee</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="gender">Φύλο</label>
+        <!-- <input type="text" class="form-control" id="gender" name="gender" [(ngModel)]="employee.gender"> -->
+        <select class="form-control" id="gender" name="gender" [(ngModel)]="employee.gender">
+          @if (employee.gender) {
+          <option value="{{employee.gender}}">{{employee.gender == "male" ? "Άντρας" : employee.gender == "female" ?
+            "Γυναίκα" : "Άλλο"}}</option>
+          }
+          @if (!employee.gender) {
+          <option value="">Επιλέξτε</option>
+          }
+          <option value="male">Άντρας</option>
+          <option value="female">Γυναίκα</option>
+          <option value="other">Άλλο</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="hireDate">Ημ/νία πρόσληψης</label>
+        <input type="date" class="form-control" id="hireDate" name="hireDate" [(ngModel)]="employee.hireDate">
+      </div>
+      <div class="form-group">
+        <label for="birthDate">Ημ/νία γέννησης</label>
+        <input type="date" class="form-control" id="birthDate" name="birthDate" [(ngModel)]="employee.birthDate">
+      </div>
+      <div class="form-group">
+        <label for="address">Διεύθυνση</label>
+        <input type="text" class="form-control" id="address" name="address" [(ngModel)]="employee.address">
+      </div>
+      <div class="form-group">
+        <label for="country">Χώρα</label>
+        <input type="text" class="form-control" id="country" name="country" [(ngModel)]="employee.country">
+      </div>
+      <div class="form-group">
+        <label for="city">Πόλη</label>
+        <input type="text" class="form-control" id="city" name="city" [(ngModel)]="employee.city">
+      </div>
+      <div class="form-group">
+        <label for="marriedStatus">Οικογενιακή κατάσταση</label>
+        <input type="text" class="form-control" id="marriedStatus" name="marriedStatus"
+          [(ngModel)]="employee.marriedStatus">
+      </div>
+      <div class="form-group">
+        <label for="haveChildren">Έχει παιδιά;</label>
+        <input type="text" class="form-control" id="haveChildren" name="haveChildren"
+          [(ngModel)]="employee.haveChildren">
+      </div>
+      <div class="form-group">
+        <label for="numberOfChildren">Αριθμός παιδιών (αν υπάρχουν)</label>
+        <input type="number" class="form-control" id="numberOfChildren" name="numberOfChildren"
+          [(ngModel)]="employee.numberOfChildren">
+      </div>
+      <div class="form-group">
+        <label for="distanceToWork">Απόσταση από την εργασία</label>
+        <input type="text" class="form-control" id="distanceToWork" name="distanceToWork"
+          [(ngModel)]="employee.distanceToWork">
+      </div>
+      <div class="form-group">
+        <label for="educationLevel">Βαθμίδα εκπάιδευσης</label>
+        <input type="text" class="form-control" id="educationLevel" name="educationLevel"
+          [(ngModel)]="employee.educationLevel">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" id="userId" name="userId" [(ngModel)]="employee.userId"
+          [value]="employee.userId" hidden>
+      </div>
+      <div class="form-group">
+        <label for="jobSatisfaction">Ικανοποίηση από την εργασία</label>
+        <select class="form-control" id="jobSatisfaction" name="jobSatisfaction" [(ngModel)]="employee.jobSatisfaction">
+          <option value="">Επιλέξτε</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="environmentSatisfaction">Ικανοποίηση από το περιβάλλον εργασίας</label>
+        <select class="form-control" id="environmentSatisfaction" name="environmentSatisfaction"
+          [(ngModel)]="employee.environmentSatisfaction">
+          <option value="">Επιλέξτε</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="relationshipSatisfaction">Ικανοποίηση από τις σχέσεις</label>
+        <select class="form-control" id="relationshipSatisfaction" name="relationshipSatisfaction"
+          [(ngModel)]="employee.relationshipSatisfaction">
+          <option value="">Επιλέξτε</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-group text-center mt-4">
+        <button type="submit" class="btn btn-success">Αποθήκευση</button>
+        <div class="m-2"></div>
+      </div>
+    </form>
+
+    <div class="p-2 mt-4 bg-secondary text-black rounded">
+      <form style="width:100%" #updateDepartmentForm="ngForm" (ngSubmit)="updateDepartment()" autocomplete="off">
+        <div class="form-group">
+          @if(dept == null) {
+          <label for="department">O Υπάλληλος δεν ανήκει σε κανένα τμήμα. Για να του
+            αλλάξετε τμήμα επιλέξτε παρακάτω</label>
+          }
+          @if(dept != null) {
+          <label for="department">O Υπάλληλος ανήκει στο τμήμα <b>{{dept ? dept.name : ''}}</b> για να του
+            αλλάξετε τμήμα επιλέξτε παρακάτω</label>
+          }
+          <select class="form-control" id="department" name="department" [(ngModel)]="department">
+            <!-- <option [selected]="dept.id">{{dept.name}}</option> -->
+            <option *ngFor="let depa of departments" [value]="depa.id">{{depa.name}}</option>
+          </select>
+        </div>
+        <div class="form-group text-center mt-4">
+          <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-2 mt-4 bg-secondary text-black rounded">
+      <form style="width:100%;" #updateManagerForm="ngForm" (ngSubmit)="updateManager()" autocomplete="off">
+        <div class="form-group">
+          <label for="managerUpd">O Υπάλληλος <b>{{manager ? 'είναι manager' : 'είναι υφιστάμενος'}}</b> για να του
+            αλλάξετε
+            κατάσταση επιλέξτε παρακάτω</label>
+          <!-- @if (manager != null) {
+        του τμήματος {{manager.departmentName}}
+        } -->
+          <select class="form-control" id="managerUpd" name="managerUpd" [(ngModel)]="managerUpd">
+            <option value="">Επιλέξτε</option>
+            <option value="manager">Manager</option>
+            <option value="employee">Υφιστάμενος</option>
+          </select>
+        </div>
+        <div class="form-group text-center mt-4">
+          <button type="submit" class="btn btn-primary">Αποθήκευση</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

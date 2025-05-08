@@ -1,0 +1,30 @@
+<!-- @for (item of employees; track $index) {
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{item.firstName}} {{item.lastName}}</h5>
+  </div>
+</div>
+} -->
+<table id="table" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Α/Α</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Ενέργιες</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of employees; track $index) {
+    <tr>
+      <td>{{$index+1}}</td>
+      <td>{{item.email}}</td>
+      <td>{{item.role}}</td>
+      <td>
+        <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
+            class="fa fa-pencil"></i></a>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

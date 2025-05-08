@@ -1,0 +1,25 @@
+<form style="width:100%;" #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
+  <h2 class="text-center text-primary">Εγγραφή</h2>
+  <hr>
+  <div class="form-group">
+    <label for="email">Email χρήστη</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="model.email" required>
+  </div>
+  <div class="form-group">
+    <label for="department">Επιλογή τμήματος</label>
+    <select class="form-select" id="department" name="department" [(ngModel)]="model.departmentId" required>
+      @for (department of departmentsFromHomeComponent(); track $index) {
+      <option [value]="department.id">{{department.name}}</option>
+      }
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="password">Κωδικός</label>
+    <input type="password" class="form-control" id="password" name="password" [(ngModel)]="model.password" required>
+  </div>
+  <div class="form-group text-center mt-4">
+    <button type="submit" class="btn btn-success">Εγγραφή</button>
+    <div class="m-2"></div>
+    <button type="button" (click)="cancel()" class="btn btn-default">Ακύρωση</button>
+  </div>
+</form>

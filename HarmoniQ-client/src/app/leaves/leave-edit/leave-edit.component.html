@@ -1,0 +1,49 @@
+<!-- <div class="card">
+  <div class="card-body">
+
+</div>
+</div> -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Δημιουργία αιτήματος αδείας</h5>
+    <form style="width:100%;" #updateLeaveForm="ngForm" (ngSubmit)="updateLeave()" autocomplete="on">
+      <div class="form-group">
+        <label for="employeeId">Εργαζόμενος</label>
+        <select class="form-control" id="employeeId" name="employeeId" [(ngModel)]="leave.employeeId" required>
+          <option value="{{leave.employeeId}}">{{leave.employeeDetails.FirstName + ' ' + leave.employeeDetails.LastName
+            + ' ' + leave.employeeDetails.Email}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="startDate">Ημ/νία αποχώρησης</label><br>
+        <label for="startDate">{{leave.startDate | date:'longDate'}}</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" [(ngModel)]="leave.startDate"
+          [defaultValue]="leave.startDate" required>
+      </div>
+      <div class="form-group">
+        <label for="endDate">Ημ/νία επιστροφής</label><br>
+        <label for="endDate">{{leave.endDate | date:'longDate'}}</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" [(ngModel)]="leave.endDate" required>
+      </div>
+      <div class="form-group">
+        <label for="reason">Λόγος</label>
+        <textarea class="form-control" id="reason" name="reason" [(ngModel)]="leave.reason" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="status">Κατάσταση</label>
+        <!-- <textarea class="form-control" id="status" name="status" [(ngModel)]="leave.status" required></textarea> -->
+        <select class="form-control" id="status" name="status" [(ngModel)]="leave.status" required>
+          <option value="Rejected">Ακύσωση</option>
+          <option value="Pending">Εκκρεμεί</option>
+          <option value="Approved">Αποδοχή</option>
+        </select>
+      </div>
+      <div class="form-group text-center mt-4">
+        <button type="submit" class="btn btn-success">Αποθήκευση</button>
+        <div class="m-2"></div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<!-- @for (item of employees; track $index) {
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{item.firstName}} {{item.lastName}}</h5>
+  </div>
+</div>
+} -->
+<div class="mb-3">
+  <a [routerLink]="['create']" class="btn btn-primary">Προσθήκη μισθοδοσίας</a>
+</div>
+<table id="table" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Α/Α</th>
+      <th>Εργαζόμενος</th>
+      <th>Ποσό</th>
+      <th>Ημ/νία</th>
+      <th>Εντολέας</th>
+      <th>Ενέργιες</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of salaries; track $index) {
+    <tr>
+      <td>{{$index+1}}</td>
+      <td>{{item.employeeFirstName + " " + item.employeeLastName || ""}}</td>
+      <td>{{item.amount + "€" || ""}}</td>
+      <td>{{item.createdAt | date:'longDate'}}</td>
+      <td>{{item.submitterEmail || ""}}</td>
+      <td>
+        <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
+            class="fa fa-pencil"></i></a>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Δημιουργία αιτήματος αδείας</h5>
+    <form style="width:100%;" #createLeaveForm="ngForm" (ngSubmit)="createLeave()" autocomplete="off">
+      <div class="form-group">
+        <label for="employeeId">Εργαζόμενος</label>
+        <select class="form-control" id="employeeId" name="employeeId" [(ngModel)]="leave.employeeId" required>
+          <option value="">Επιλέξτε</option>
+          @for (employee of employees; track $index) {
+          <option value="{{employee.id}}">{{employee.firstName + ' ' + employee.lastName + ' ' + employee.email}}
+          </option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="startDate">Ημ/νία αποχώρησης</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" [(ngModel)]="leave.startDate" required>
+      </div>
+      <div class="form-group">
+        <label for="endDate">Ημ/νία επιστροφής</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" [(ngModel)]="leave.endDate" required>
+      </div>
+      <div class="form-group">
+        <label for="reason">Λόγος</label>
+        <textarea class="form-control" id="reason" name="reason" [(ngModel)]="leave.reason" required></textarea>
+      </div>
+      <div class="form-group text-center mt-4">
+        <button type="submit" class="btn btn-success">Αποθήκευση</button>
+        <div class="m-2"></div>
+      </div>
+    </form>
+  </div>
+</div>

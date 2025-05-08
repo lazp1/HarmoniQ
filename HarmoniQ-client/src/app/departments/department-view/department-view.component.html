@@ -1,0 +1,37 @@
+<div class="card">
+  <div class="card-body">
+    <a [routerLink]="['edit']">
+      <h5 class="card-title">{{department.name}}</h5>
+    </a>
+    <div class="container">
+      <!-- <form style="width:100%;" #deleteDepartmentForm="ngForm" (ngSubmit)="deleteDepartment()" autocomplete="off"> -->
+      <!-- <button class="btn btn-danger btn-lg float-right" type="submit"
+        style="position: absolute; top: 10px; right: 10px; border: 1px solid;" alt="Διαγραφή">
+        <i class="fa fa-trash"></i>
+      </button> -->
+      <!-- </form> -->
+      <a [routerLink]="['edit']" class="btn btn-light btn-lg float-right"
+        style="position: absolute; top: 10px; right: 10px;" alt="Επεξεργασία"><i class="fa fa-pencil"></i></a>
+
+    </div>
+    <br>
+    <hr>
+    <div style="text-align: center;">
+      <div class="container">
+        <table class="table table-striped">
+          @for (employee of employees; track $index) {
+
+          <tr>
+            <td>{{$index+1}}</td>
+            <a [routerLink]="['/admin/employees', employee.id]">
+              <td>{{employee?.firstName ? employee.firstName : ""}}</td>
+              <td>{{employee?.lastName ? employee.lastName : ""}}</td>
+              <td>{{employee.email}}</td>
+            </a>
+          </tr>
+          }
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
