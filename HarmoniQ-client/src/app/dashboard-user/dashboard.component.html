@@ -1,1 +1,139 @@
-<p>dashboard works!</p>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Πίνακας Ελέγχου</h2>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title">Υπόλοιπο Αδειών</h5>
+                            <p class="card-text">
+                                <span class="h2">{{remainingLeaves}}</span>
+                                <span class="text-muted"> ημέρες απομένουν</span>
+                            </p>
+                            <p class="text-muted">Από σύνολο {{totalAllowedLeaves}} ημερών ετησίως</p>
+                            <div class="mt-3">
+                                <button class="btn btn-primary" (click)="openModal()">
+                                    + Αίτηση Άδειας
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leave History -->
+                <div class="col-md-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ιστορικό Αδειών</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Από</th>
+                                            <th>Έως</th>
+                                            <th>Αιτιολογία</th>
+                                            <th>Κατάσταση</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let leave of paginatedLeaves">
+                                            <td>{{leave.startDate | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{leave.endDate | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{leave.reason}}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <span [class]="getStatusClass(leave.status)">
+                                                        {{getStatusTranslation(leave.status)}}
+                                                    </span>
+                                                    <button *ngIf="leave.status === 'Pending'"
+                                                        class="btn btn-sm btn-danger ms-2"
+                                                        (click)="cancelLeave(leave.id)">
+                                                        Ακύρωση
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="myLeaves.length === 0">
+                                            <td colspan="4" class="text-center">Δεν υπάρχουν καταχωρημένες άδειες</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Pagination -->
+                                <div class="d-flex justify-content-between align-items-center mt-3"
+                                    *ngIf="myLeaves.length > 0">
+                                    <div>
+                                        <small class="text-muted">Σελίδα {{currentPage}} από {{totalPages}}</small>
+                                    </div>
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination mb-0">
+                                            <li class="page-item" [class.disabled]="currentPage === 1">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                    (click)="changePage(currentPage - 1)">
+                                                    Προηγούμενη
+                                                </a>
+                                            </li>
+                                            <li class="page-item" *ngFor="let page of pages"
+                                                [class.active]="page === currentPage">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                    (click)="changePage(page)">
+                                                    {{page}}
+                                                </a>
+                                            </li>
+                                            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                    (click)="changePage(currentPage + 1)">
+                                                    Επόμενη
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leave Request Modal -->
+<div class="modal" [style.display]="showModal ? 'block' : 'none'">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Αίτηση Άδειας</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form #leaveForm="ngForm">
+                    <div class="form-group mb-3">
+                        <label for="startDate">Ημερομηνία Έναρξης</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate"
+                            [(ngModel)]="newLeave.startDate" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="endDate">Ημερομηνία Λήξης</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate"
+                            [(ngModel)]="newLeave.endDate" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="reason">Αιτιολογία</label>
+                        <textarea class="form-control" id="reason" name="reason" [(ngModel)]="newLeave.reason" required
+                            rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Ακύρωση</button>
+                <button type="button" class="btn btn-primary" (click)="submitLeave()">Υποβολή</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>

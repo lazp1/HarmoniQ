@@ -19,7 +19,7 @@ import { get } from 'jquery';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  chart: any = []
+  chart: any = [];
   apiUrl = environment.apiUrl;
   brainApiUrl = environment.brainApiUrl;
   chartStatistics: any;
@@ -31,6 +31,12 @@ export class DashboardComponent {
   employees = [] as any;
   employeesAIList = [] as any;
   private errorHandler = inject(ErrorHandlerService);
+
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 1;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -235,7 +241,6 @@ export class DashboardComponent {
     });
   }
 
-
   getEmployeeData(id: number) {
     return this.http.get(this.apiUrl + 'api/employee/' + id);
   }
@@ -244,10 +249,12 @@ export class DashboardComponent {
     this.http.post(this.brainApiUrl + 'suggestions', this.employees).subscribe({
       next: (response) => {
         this.employeesAIList = response;
+        this.totalPages = Math.ceil(this.employeesAIList.length / this.itemsPerPage);
+        this.currentPage = 1;
+
         for (let i = 0; i < this.employeesAIList.length; i++) {
           this.getEmployeeData(this.employeesAIList[i].id).subscribe({
             next: (employee: any) => {
-              console.log(employee);
               this.employeesAIList[i].firstName = employee.firstName;
               this.employeesAIList[i].lastName = employee.lastName;
               this.employeesAIList[i].email = employee.email;
@@ -260,9 +267,26 @@ export class DashboardComponent {
       },
       error: (error) => {
         this.errorHandler.handleError(error);
-      },
-      complete: () => {
-      },
+      }
     });
+  }
+
+  get paginatedEmployees() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.employeesAIList.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get pages() {
+    const pagesArray = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pagesArray.push(i);
+    }
+    return pagesArray;
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 }

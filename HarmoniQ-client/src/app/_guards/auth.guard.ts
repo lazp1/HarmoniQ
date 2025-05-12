@@ -7,14 +7,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const accountService = inject(AccountService);
   const toastr = inject(ToastrService);
 
-  if (accountService.currentUser()) {
-    return true;
-  }
   const user = accountService.currentUser();
   if (!user) {
     toastr.error('Πρέπει να συνδεθείτε για να έχετε πρόσβαση');
     return false;
   }
 
-  return false;
+  return true;
 };

@@ -14,12 +14,35 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class SalaryListComponent {
   http = inject(HttpClient);
-  salaries: any;
+  salaries: any[] = [];
   apiUrl = environment.apiUrl;
   errorHandler = inject(ErrorHandlerService);
+
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 1;
+
   constructor(private router: Router) { }
 
+  get paginatedSalaries() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.salaries.slice(startIndex, startIndex + this.itemsPerPage);
+  }
 
+  get pages() {
+    const pagesArray = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pagesArray.push(i);
+    }
+    return pagesArray;
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
 
   ngOnInit(): void {
     this.getSalaries();
@@ -27,12 +50,14 @@ export class SalaryListComponent {
 
   getSalaries() {
     this.http.get(this.apiUrl + 'api/salary').subscribe({
-      next: (response) => (this.salaries = response),
+      next: (response) => {
+        this.salaries = response as any[];
+        this.totalPages = Math.ceil(this.salaries.length / this.itemsPerPage);
+      },
       error: (error) => {
         this.errorHandler.handleError(error);
       },
       complete: () => {
-
       },
     });
   }

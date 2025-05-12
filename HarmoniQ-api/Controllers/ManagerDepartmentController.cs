@@ -73,31 +73,45 @@ public class ManagerDepartmentController : ControllerBase
     return Ok(new { Message = "Employee department updated successfully" });
   }
 
-  //get manager department by employee id
+  //get manager department info by employee id - returns empty if not a manager
   [HttpGet("employee/{employeeId}")]
   public IActionResult GetManagerDepartmentByEmployeeId(int employeeId)
   {
-    using var connection = _dbHelper.GetConnection();
-    connection.Open();
-
-    var query = "SELECT * FROM Managers_Departments INNER JOIN Departments ON Departments.Id = Managers_Departments.DepartmentId WHERE EmployeeId = @EmployeeId";
-
-    using var command = new MySqlCommand(query, connection);
-    command.Parameters.AddWithValue("@EmployeeId", employeeId);
-    using var reader = command.ExecuteReader();
-
-    var managerDepartments = new List<object>();
-    while (reader.Read())
+    try
     {
-      managerDepartments.Add(new
+      using var connection = _dbHelper.GetConnection();
+      connection.Open();
+
+      // Get the manager's department information using LEFT JOIN to handle cases where department might not exist
+      var query = @"
+        SELECT md.Id, md.EmployeeId, md.DepartmentId, d.Name as DepartmentName 
+        FROM Managers_Departments md 
+        LEFT JOIN Departments d ON d.Id = md.DepartmentId 
+        WHERE md.EmployeeId = @EmployeeId";
+
+      using var command = new MySqlCommand(query, connection);
+      command.Parameters.AddWithValue("@EmployeeId", employeeId);
+      using var reader = command.ExecuteReader();
+
+      var managerDepartments = new List<object>();
+      while (reader.Read())
       {
-        Id = reader["Id"],
-        EmployeeId = reader["EmployeeId"],
-        DepartmentId = reader["DepartmentId"],
-        DepartmentName = reader["Name"]
-      });
+        managerDepartments.Add(new
+        {
+          Id = Convert.ToInt32(reader["Id"]),
+          EmployeeId = employeeId,
+          DepartmentId = reader["DepartmentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DepartmentId"]),
+          DepartmentName = reader["DepartmentName"] == DBNull.Value ? null : reader["DepartmentName"].ToString()
+        });
+      }
+
+      // Return empty array instead of 404 when employee is not a manager
+      return Ok(managerDepartments);
     }
-    return Ok(managerDepartments);
+    catch (Exception ex)
+    {
+      return StatusCode(500, new { Message = $"An error occurred while fetching manager department information: {ex.Message}" });
+    }
   }
 
   [HttpDelete("employee/{id}")]

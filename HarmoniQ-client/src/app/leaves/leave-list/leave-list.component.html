@@ -1,54 +1,73 @@
-<div class="mb-3">
-  <a [routerLink]="['create']" class="btn btn-primary">Προσθήκη άδειας</a>
+<div class="container">
+  <div class="mb-3">
+    <a [routerLink]="['create']" class="btn btn-primary">Προσθήκη άδειας</a>
+  </div>
+  <table id="table" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Α/Α</th>
+        <th>Εργαζόμενος</th>
+        <th>Ημ/νία αποχώρησης</th>
+        <th>Ημ/νία επιστροφής</th>
+        <th>Λόγος</th>
+        <th>Κατάσταση</th>
+        <th>Αποδοχή / Απόρρριψη</th>
+        <th>Ενέργειες</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of paginatedLeaves; track $index) {
+      <tr>
+        <td>{{(currentPage - 1) * itemsPerPage + $index + 1}}</td>
+        <td>{{ item.employeeDetails.FirstName + ' ' + item.employeeDetails.LastName + ' ' + item.employeeDetails.Email
+          }}</td>
+        <td>{{ item.startDate | date:'longDate' }}</td>
+        <td>{{ item.endDate | date:'longDate' }}</td>
+        <td>{{ item.reason }}</td>
+        <td
+          [ngStyle]="{'background-color': item.status == 'Rejected' ? '#fc7a6f' : item.status == 'Approved' ? '#7afcbf' : ''}">
+          {{ item.status }}
+        </td>
+        <td>
+          <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
+              class="fa fa-check"></i></a>
+          <a [routerLink]="[item.id]" class=" btn btn-light btn-lg float-right" alt="Προβολή"><i
+              class="fa fa-ban"></i></a>
+        </td>
+        <td>
+          <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
+              class="fa fa-pencil"></i></a>
+          <a [routerLink]="[item.id]" class=" btn btn-light btn-lg float-right" alt="Προβολή"><i
+              class="fa fa-play"></i></a>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="leaves.length > itemsPerPage">
+    <div>
+      <small class="text-muted">Σελίδα {{currentPage}} από {{totalPages}}</small>
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)">
+            Προηγούμενη
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">
+            {{page}}
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)">
+            Επόμενη
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>
-<table id="table" class="table table-striped">
-  <thead>
-    <tr>
-      <th>Α/Α</th>
-      <th>Εργαζόμενος</th>
-      <th>Ημ/νία αποχώρησης</th>
-      <th>Ημ/νία επιστροφής</th>
-      <th>Λόγος</th>
-      <th>Κατάσταση</th>
-      <th>Αποδοχή / Απόρρριψη</th>
-      <th>Ενέργειες</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (item of leaves; track $index) {
-    <tr>
-      <td>{{ $index+1 }}</td>
-      <td>{{ item.employeeDetails.FirstName + ' ' + item.employeeDetails.LastName + ' ' + item.employeeDetails.Email }}
-      </td>
-      <td>{{ item.startDate | date:'longDate' }}</td>
-      <td>{{ item.endDate | date:'longDate' }}</td>
-      <td>{{ item.reason }}</td>
-      <!-- @if (item.status == 'rejected'){
-      <td style='background-color: #fc7a6f'>{{ item.status }}</td>
-      }
-      @if (item.status == 'approved'){
-      <td style='background-color: #7afcbf'>{{ item.status }}</td>
-      }
-      @if (item.status == 'pending'){
-      <td>{{ item.status }}</td>
-      } -->
-      <td
-        [ngStyle]="{'background-color': item.status == 'Rejected' ? '#fc7a6f' : item.status == 'Approved' ? '#7afcbf' : ''}">
-        {{ item.status }}
-      </td>
-      <td>
-        <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
-            class="fa fa-check"></i></a>
-        <a [routerLink]="[item.id]" class=" btn btn-light btn-lg float-right" alt="Προβολή"><i
-            class="fa fa-ban"></i></a>
-      </td>
-      <td>
-        <a [routerLink]="[item.id, 'edit']" class="btn btn-light btn-lg float-right" alt="Επεξεργασία"><i
-            class="fa fa-pencil"></i></a>
-        <a [routerLink]="[item.id]" class=" btn btn-light btn-lg float-right" alt="Προβολή"><i
-            class="fa fa-play"></i></a>
-      </td>
-    </tr>
-    }
-  </tbody>
-</table>

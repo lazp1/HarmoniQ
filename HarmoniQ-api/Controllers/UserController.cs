@@ -90,4 +90,23 @@ public class UserController : ControllerBase
         }
         return Ok(new { Message = "User updated successfully" });
     }
+
+    [HttpGet("employee/{userId}")]
+    public IActionResult GetEmployeeIdByUserId(int userId)
+    {
+        using var connection = _dbHelper.GetConnection();
+        connection.Open();
+
+        var query = "SELECT Id FROM Employees WHERE UserId = @UserId";
+        using var command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@UserId", userId);
+
+        var result = command.ExecuteScalar();
+        if (result != null)
+        {
+            return Ok(new { EmployeeId = Convert.ToInt32(result) });
+        }
+
+        return NotFound(new { Message = "Employee not found for this user" });
+    }
 }

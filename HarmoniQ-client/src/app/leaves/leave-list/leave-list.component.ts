@@ -22,8 +22,32 @@ export class LeaveListComponent {
   private router = inject(Router);
   errorHandler = inject(ErrorHandlerService);
 
-  leaves: any;
+  leaves: any[] = [];
   employee: any;
+
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 1;
+
+  get paginatedLeaves() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.leaves.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get pages() {
+    const pagesArray = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pagesArray.push(i);
+    }
+    return pagesArray;
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
 
   ngOnInit(): void {
     this.getLeaves();
@@ -31,12 +55,14 @@ export class LeaveListComponent {
 
   getLeaves() {
     this.http.get(this.apiUrl + 'api/leave').subscribe({
-      next: (response) => (this.leaves = response),
+      next: (response) => {
+        this.leaves = response as any[];
+        this.totalPages = Math.ceil(this.leaves.length / this.itemsPerPage);
+      },
       error: (error) => {
         this.errorHandler.handleError(error);
       },
       complete: () => {
-
       },
     });
   }
@@ -48,7 +74,6 @@ export class LeaveListComponent {
         this.errorHandler.handleError(error);
       },
       complete: () => {
-
       },
     });
   }

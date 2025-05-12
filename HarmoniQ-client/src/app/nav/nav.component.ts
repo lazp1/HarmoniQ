@@ -44,11 +44,8 @@ export class NavComponent {
 
   login() {
     this.accountService.login(this.model).subscribe({
-      next: () => {
-        void this.router.navigate(['/dashboard']);
-      },
       error: (error) => {
-        this.toastr.error(error.error.message);
+        this.toastr.error(error.error.message || 'Error during login');
       },
       complete: () => {
         console.log('complete');

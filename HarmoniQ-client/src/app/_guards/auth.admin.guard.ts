@@ -1,20 +1,22 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { inject } from '@angular/core';
 
 export const authAdminGuard: CanActivateFn = (route, state) => {
     const toastr = inject(ToastrService);
-    let role = localStorage.getItem('userRole');
+    const router = inject(Router);
+    const role = localStorage.getItem('userRole');
 
-    role = role ? role.replace(/"/g, '') : null;
-
-    // console.log(cleanedUserRole);
-    if (role == "Admin") {
+    if (role === "Admin") {
         return true;
-    } else {
-        toastr.error('Πρέπει να είστε διαχειριστής για να έχετε πρόσβαση');
-        return false;
     }
-
+    
+    toastr.error('Πρέπει να είστε διαχειριστής για να έχετε πρόσβαση');
+    // Redirect to appropriate dashboard based on role
+    if (role === "Manager") {
+        void router.navigate(['/manager/dashboard']);
+    } else if (role === "User") {
+        void router.navigate(['/employee/dashboard']);
+    }
     return false;
 };

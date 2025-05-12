@@ -33,6 +33,9 @@
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="manager/dashboard">Πίνακας Ελέγχου</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="manager/leaves">Άδειες</a>
+          </li>
           }
           @if (accountService.currentUser()?.user?.role === 'User') {
           <li class="nav-item">
@@ -48,8 +51,10 @@
         <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">Καλως ορίστατε
           {{this.userFullName}}</a>
         <div *dropdownMenu class="dropdown-menu">
+          @if (accountService.currentUser()?.user?.role === 'Admin') {
           <a class="dropdown-item">Προφίλ</a>
           <div class="dropdown-divider"></div>
+          }
           <a class="dropdown-item" (click)="logout()">Αποσύνδεση</a>
         </div>
       </div>

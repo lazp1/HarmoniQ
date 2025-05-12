@@ -38,6 +38,38 @@ public class EmployeeDepartmentController : ControllerBase
     return Ok(departments);
   }
 
+  [HttpGet]
+  public IActionResult GetAllEmployeeDepartments()
+  {
+    using var connection = _dbHelper.GetConnection();
+    connection.Open();
+
+    var query = @"
+      SELECT ed.Id, ed.EmployeeId, ed.DepartmentId, 
+             e.FirstName, e.LastName,
+             d.Name as DepartmentName
+      FROM Employees_Departments ed
+      JOIN Employees e ON ed.EmployeeId = e.Id
+      JOIN Departments d ON ed.DepartmentId = d.Id";
+
+    using var command = new MySqlCommand(query, connection);
+    using var reader = command.ExecuteReader();
+
+    var mappings = new List<object>();
+    while (reader.Read())
+    {
+      mappings.Add(new
+      {
+        Id = Convert.ToInt32(reader["Id"]),
+        EmployeeId = Convert.ToInt32(reader["EmployeeId"]),
+        DepartmentId = Convert.ToInt32(reader["DepartmentId"]),
+        EmployeeName = $"{reader["FirstName"]} {reader["LastName"]}",
+        DepartmentName = reader["DepartmentName"].ToString()
+      });
+    }
+    return Ok(mappings);
+  }
+
   [HttpPut("{id}")]
   public IActionResult UpdateEmployeeDepartment(int id, [FromBody] EmployeeDepartment employeeDepartment)
   {

@@ -6,6 +6,7 @@ import { authGuard } from './_guards/auth.guard';
 import { authAdminGuard } from './_guards/auth.admin.guard';
 import { authManagerGuard } from './_guards/auth.manager.guard';
 import { authEmployeeGuard } from './_guards/auth.employee.guard';
+import { authGuestGuard } from './_guards/auth.guest.guard';
 import { DepartmentListComponent } from './departments/department-list/department-list.component';
 import { DepartmentEditComponent } from './departments/department-edit/department-edit.component';
 import { DepartmentCreateComponent } from './departments/department-create/department-create.component';
@@ -26,7 +27,7 @@ import { LeaveCreateComponent } from './leaves/leave-create/leave-create.compone
 import { SalaryCreateComponent } from './salaries/salary-create/salary-create.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [authGuestGuard] },
   {
     path: 'admin',
     runGuardsAndResolvers: 'always',
@@ -128,6 +129,11 @@ export const routes: Routes = [
         path: 'dashboard',
         canActivate: [authManagerGuard],
         component: DashboardManagerComponent,
+      },
+      {
+        path: 'leaves',
+        canActivate: [authManagerGuard],
+        component: DashboardUserComponent, // Reuse employee dashboard for personal leaves
       },
     ],
   },
