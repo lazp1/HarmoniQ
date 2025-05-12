@@ -1,0 +1,13 @@
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-text {
+  font-size: 0.875em;
+  color: #6c757d;
+}

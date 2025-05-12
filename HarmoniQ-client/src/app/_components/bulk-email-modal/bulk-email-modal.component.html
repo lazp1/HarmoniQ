@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <h4 class="modal-title">Αποστολή Email</h4>
+  <button type="button" class="btn-close" (click)="dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3" *ngIf="isAdmin">
+      <label class="form-label">Τμήματα</label>
+      <select class="form-select" formControlName="departmentIds" multiple>
+        <option *ngFor="let dept of departments" [value]="dept.id">
+          {{dept.name}}
+        </option>
+      </select>
+      <div class="form-text">Κρατήστε πατημένο το Ctrl/Cmd για να επιλέξετε πολλαπλά τμήματα. Αφήστε κενό για αποστολή σε όλα τα τμήματα.</div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Θέμα</label>
+      <input type="text" class="form-control" formControlName="subject"
+             [ngClass]="{ 'is-invalid': submitted && emailForm.get('subject')?.errors }">
+      <div class="invalid-feedback" *ngIf="submitted && emailForm.get('subject')?.errors">
+        Το θέμα είναι υποχρεωτικό
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Μήνυμα</label>
+      <textarea class="form-control" rows="5" formControlName="body"
+                [ngClass]="{ 'is-invalid': submitted && emailForm.get('body')?.errors }"></textarea>
+      <div class="invalid-feedback" *ngIf="submitted && emailForm.get('body')?.errors">
+        Το μήνυμα είναι υποχρεωτικό
+      </div>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" formControlName="isHtml" id="isHtml">
+      <label class="form-check-label" for="isHtml">Το μήνυμα περιέχει HTML</label>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismiss()">Ακύρωση</button>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+    <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+    Αποστολή Email
+  </button>
+</div>

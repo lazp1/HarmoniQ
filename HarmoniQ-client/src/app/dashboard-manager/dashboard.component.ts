@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BulkEmailModalComponent } from '../_components/bulk-email-modal/bulk-email-modal.component';
 
 interface DepartmentLeaves {
   pending: number;
@@ -17,7 +19,7 @@ interface DepartmentLeaves {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, BulkEmailModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -25,6 +27,7 @@ export class DashboardManagerComponent implements OnInit {
   http = inject(HttpClient);
   accountService = inject(AccountService);
   toastr = inject(ToastrService);
+  modalService = inject(NgbModal);
   apiUrl = environment.apiUrl;
   currentUser: any;
   departmentId: number | null = null;
@@ -227,5 +230,24 @@ export class DashboardManagerComponent implements OnInit {
         }
       });
     }
+  }
+
+  openEmailModal() {
+    const modalRef = this.modalService.open(BulkEmailModalComponent, {
+      size: 'lg',
+      backdrop: 'static'
+    });
+
+    modalRef.componentInstance.userDepartmentId = this.departmentId;
+    modalRef.componentInstance.isAdmin = false;
+
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.toastr.success('Τα emails στάλθηκαν με επιτυχία');
+        }
+      },
+      () => {}
+    );
   }
 }

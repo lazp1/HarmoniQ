@@ -5,6 +5,9 @@ import { environment } from '../../environments/environment';
 import { ErrorHandlerService } from '../_services/error-handler.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, NgFor } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BulkEmailModalComponent } from '../_components/bulk-email-modal/bulk-email-modal.component';
+import { ToastrService } from 'ngx-toastr';
 import { get } from 'jquery';
 
 @Component({
@@ -31,6 +34,8 @@ export class DashboardComponent {
   employees = [] as any;
   employeesAIList = [] as any;
   private errorHandler = inject(ErrorHandlerService);
+  private modalService = inject(NgbModal);
+  private toastr = inject(ToastrService);
 
   // Pagination properties
   currentPage = 1;
@@ -288,5 +293,23 @@ export class DashboardComponent {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
     }
+  }
+
+  openEmailModal() {
+    const modalRef = this.modalService.open(BulkEmailModalComponent, {
+      size: 'lg',
+      backdrop: 'static'
+    });
+
+    modalRef.componentInstance.isAdmin = true;
+
+    modalRef.result.then(
+      (result: boolean) => {
+        if (result) {
+          this.toastr.success('Τα emails στάλθηκαν με επιτυχία');
+        }
+      },
+      () => {}
+    );
   }
 }
